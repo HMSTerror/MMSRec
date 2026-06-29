@@ -1,0 +1,75 @@
+% Beauty2013 submission-ready tables
+% Requires: \usepackage{booktabs}
+
+% Table 1. Main Results
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Model & Seed & NDCG@10 & HR@10 & Gain (\%) \\
+\midrule
+PyTorch SASRec baseline & 100 & 0.044427 & 0.068595 & 0.00 \\
+Best source-text family (source075\_w15) & 100 & 0.053096 & 0.087466 & 19.51 \\
+Best category-profile run & 102 & 0.053792 & 0.090283 & 21.08 \\
+\bottomrule
+\end{tabular}
+\caption{Main results on Beauty2013. The best category-profile multimodal SASRec variant achieves the strongest single-run result and improves NDCG@10 by 21.08\% over the PyTorch SASRec baseline under early-stopped evaluation.}
+\label{tab:beauty2013_main_results}
+\end{table}
+
+% Table 2. Robustness Across Matched Seeds
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Family & Seeds & Mean NDCG@10 & Std NDCG@10 & Gain vs 3-seed baseline (\%) \\
+\midrule
+PyTorch SASRec baseline & 3 & 0.045440 & 0.000725 & 0.00 \\
+source075\_w15 matched seeds & 10 & 0.051210 & 0.001120 & 12.70 \\
+category-profile matched seeds & 10 & 0.051913 & 0.001013 & 14.24 \\
+\bottomrule
+\end{tabular}
+\caption{Matched-seed robustness comparison. The category-profile branch improves the average NDCG@10 and wins on seven of ten matched seeds. The mean paired delta is 0.000702, with a 95\% bootstrap confidence interval of [-0.000031, 0.001458]. The one-sided exact sign test p-value is 0.171875, so we describe the result as a positive robustness trend rather than a decisive statistical win.}
+\label{tab:beauty2013_robustness}
+\end{table}
+
+% Table 3. Search Trajectory
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrl}
+\toprule
+Variant & NDCG@10 & Gain (\%) & Role in story \\
+\midrule
+SASRec baseline & 0.044427 & 0.00 & reference point \\
+Early multimodal decomposition (v3) & 0.050210 & 13.02 & first clear multimodal lift \\
+Metadata + source text full tuned & 0.051624 & 16.20 & strong text-heavy baseline \\
+Metadata + source text + brand/category (v5) & 0.052411 & 17.97 & structured metadata helps \\
+Structured weight 1.5 (v8) & 0.052646 & 18.50 & stronger structured weighting \\
+Best source075\_w15 family (v16) & 0.053096 & 19.51 & strongest pre-category family \\
+Best category-profile configuration (v36) & 0.053310 & 19.99 & category helps as profile signal \\
+Best category-profile seed hit (v39 seed102) & 0.053792 & 21.08 & strongest headline result \\
+\bottomrule
+\end{tabular}
+\caption{Search trajectory on Beauty2013. The final gain emerges from a sequence of improvements on top of the text-heavy multimodal backbone, with the category-profile branch providing the strongest final lift.}
+\label{tab:beauty2013_search_trajectory}
+\end{table}
+
+% Table 4. Negative Follow-Ups
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{p{0.23\linewidth}p{0.24\linewidth}p{0.41\linewidth}}
+\toprule
+Follow-up & Best observed outcome & Conclusion \\
+\midrule
+Text-profile blend (v45) & best 0.053300, still below v36 & Reintroducing weak text-profile scoring does not help. \\
+Plateau seed rescue (v47) & weak seeds remain at 0.051038 / 0.051003 & Schedule changes do not solve robustness. \\
+Weak-seed gate sweep (v48) & best nearby-gate reruns seed101 0.050989 / seed103 0.050935 & Local gate mismatch is not the main issue. \\
+\bottomrule
+\end{tabular}
+\caption{Negative control experiments. These follow-ups strengthen the causal story by showing that the final category-profile gain is not a trivial optimizer artifact or a nearby gate-setting accident.}
+\label{tab:beauty2013_negative_controls}
+\end{table}
